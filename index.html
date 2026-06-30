@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matéria de Robótica - Vídeos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Navegação */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 20px 0;
+            border-radius: 15px;
+            padding: 15px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Formulário */
+        #adicionar-video {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #adicionar-video h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Galeria */
+        #galeria {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #galeria h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #filtros {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filtro-btn {
+            padding: 10px 25px;
+            border: 2px solid #667eea;
+            background: transparent;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filtro-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .filtro-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Cards de Vídeo */
+        #lista-videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .video-info .categoria {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .video-info p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .video-info .data {
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .btn-remover {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+
+        .btn-remover:hover {
+            background: #ff3838;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px 0;
+            opacity: 0.9;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            #lista-videos {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-add {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🤖 Robótica - Vídeos das Aulas</h1>
+            <p>Projetos e experimentos da turma</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#todos">Todos os Vídeos</a></li>
+                <li><a href="#projetos">Projetos</a></li>
+                <li><a href="#tutoriais">Tutoriais</a></li>
+                <li><a href="#experimentos">Experimentos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Seção para adicionar novos vídeos -->
+            <section id="adicionar-video">
+                <h2>➕ Adicionar Novo Vídeo</h2>
+                <form id="form-video">
+                    <div class="form-group">
+                        <label for="titulo">Título do Vídeo:</label>
+                        <input type="text" id="titulo" required placeholder="Ex: Robô Seguidor de Linha">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoria">Categoria:</label>
+                        <select id="categoria" required>
+                            <option value="projetos">Projetos</option>
+                            <option value="tutoriais">Tutoriais</option>
+                            <option value="experimentos">Experimentos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arquivo">Arquivo de Vídeo:</label>
+                        <input type="file" id="arquivo" accept="video/*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descricao">Descrição:</label>
+                        <textarea id="descricao" rows="3" placeholder="Descreva o que acontece no vídeo..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-add">Adicionar Vídeo</button>
+                </form>
+            </section>
+
+            <!-- Galeria de Vídeos -->
+            <section id="galeria">
+                <h2>🎥 Galeria de Vídeos</h2>
+                <div id="filtros">
+                    <button class="filtro-btn active" data-filtro="todos">Todos</button>
+                    <button class="filtro-btn" data-filtro="projetos">Projetos</button>
+                    <button class="filtro-btn" data-filtro="tutoriais">Tutoriais</button>
+                    <button class="filtro-btn" data-filtro="experimentos">Experimentos</button>
+                </div>
+                
+                <div id="lista-videos">
+                    <!-- Os vídeos serão inseridos aqui via JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 - Matéria de Robótica | Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Array para armazenar os vídeos
+        let videos = [];
+
+        // Carregar vídeos salvos do localStorage
+        function carregarVideos() {
+            const salvos = localStorage.getItem('videosRobotica');
+            if (salvos) {
+                videos = JSON.parse(salvos);
+            } else {
+                // Vídeos de exemplo
+                videos = [
+                    {
+                        id: 1,
+                        titulo: "Robô Seguidor de Linha",
+                        categoria: "projetos",
+                        descricao: "Projeto de robô que segue uma linha preta no chão utilizando sensores infravermelhos.",
+                        data: "2024-01-15",
+                        arquivo: "videos/video1.mp4"
+                    },
+                    {
+                        id: 2,
+                        titulo: "Controle de Motor com Arduino",
+                        categoria: "tutoriais",
+                        descricao: "Tutorial passo a passo de como controlar um motor DC com Arduino e ponte H.",
+                        data: "2024-01-20",
+                        arquivo: "videos/video2.mp4"
+                    },
+                    {
+                        id: 3,
+                        titulo: "Sensor Ultrassônico HC-SR04",
+                        categoria: "experimentos",
+                        descricao: "Experimento com sensor ultrassônico para medir distâncias com Arduino.",
+                        data: "2024-01-25",
+                        arquivo: "videos/video3.mp4"
+                    }
+                ];
+                salvarVideos();
+            }
+            exibirVideos();
+        }
+
+        // Salvar vídeos no localStorage
+        function salvarVideos() {
+            localStorage.setItem('videosRobotica', JSON.stringify(videos));
+        }
+
+        // Exibir vídeos na galeria
+        function exibirVideos(filtro = 'todos') {
+            const lista = document.getElementById('lista-videos');
+            lista.innerHTML = '';
+
+            let videosFiltrados = videos;
+            if (filtro !== 'todos') {
+                videosFiltrados = videos.filter(v => v.categoria === filtro);
+            }
+
+            if (videosFiltrados.length === 0) {
+                lista.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Nenhum vídeo encontrado nesta categoria.</p>';
+                return;
+            }
+
+            videosFiltrados.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.setAttribute('data-categoria', video.categoria);
+
+                const categorias = {
+                    'projetos': 'Projetos',
+                    'tutoriais': 'Tutoriais',
+                    'experimentos': 'Experimentos'
+                };
+
+                card.innerHTML = `
+                    <video controls>
+                        <source src="${video.arquivo}" type="video/mp4">
+                        Seu navegador não suporta a reprodução de vídeos.
+                    </video>
+                    <div class="video-info">
+                        <span class="categoria">${categorias[video.categoria] || video.categoria}</span>
+                        <h3>${video.titulo}</h3>
+                        <p>${video.descricao || 'Sem descrição'}</p>
+                        <div class="data">📅 ${formatarData(video.data)}</div>
+                        <button class="btn-remover" onclick="removerVideo(${video.id})">🗑️ Remover</button>
+                    </div>
+                `;
+
+                lista.appendChild(card);
+            });
+        }
+
+        // Formatar data
+        function formatarData(dataString) {
+            const data = new Date(dataString);
+            return data.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Adicionar novo vídeo
+        document.getElementById('form-video').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const titulo = document.getElementById('titulo').value;
+            const categoria = document.getElementById('categoria').value;
+            const descricao = document.getElementById('descricao').value;
+            const arquivo = document.getElementById('arquivo').files[0];
+
+            if (!arquivo) {
+                alert('Por favor, selecione um arquivo de vídeo.');
+                return;
+            }
+
+            // Verificar se o arquivo é um vídeo
+            if (!arquivo.type.startsWith('video/')) {
+                alert('Por favor, selecione um arquivo de vídeo válido.');
+                return;
+            }
+
+            // Criar URL do arquivo
+            const urlVideo = URL.createObjectURL(arquivo);
+
+            // Criar novo vídeo
+            const novoVideo = {
+                id: Date.now(),
+                titulo: titulo,
+                categoria: categoria,
+                descricao: descricao,
+                data: new Date().toISOString().split('T')[0],
+                arquivo: urlVideo
+            };
+
+            videos.push(novoVideo);
+            salvarVideos();
+            exibirVideos(document.querySelector('.filtro-btn.active')?.dataset.filtro || 'todos');
+
+            // Limpar formulário
+            this.reset();
+            alert('✅ Vídeo adicionado com sucesso!');
+        });
+
+        // Remover vídeo
+        function removerVideo(id) {
+            if (confirm('Tem certeza que deseja remover este vídeo?')) {
+                videos = videos.filter(v => v.id !== id);
+                salvarVideos();
+                exibirVideos(document.querySelector('.filtro-btn.active')?.dataset.filtro || 'todos');
+            }
+        }
+
+        // Filtros
+        document.querySelectorAll('.filtro-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const filtro = this.dataset.filtro;
+                exibirVideos(filtro);
+            });
+        });
+
+        // Inicializar
+        carregarVideos();
+    </script>
+</body>
+</html>
